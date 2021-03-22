@@ -15,41 +15,17 @@ export class AddForm {
         const addForm = document.createElement('form');
         addForm.setAttribute('class', 'add-form');
 
-        const inputType = document.createElement('input');
-        inputType.type = 'text';
-        inputType.setAttribute('class', 'add-field');
+        const inputType = this.createInput('type', 'add-field', 'text', 'add a type');
+        this.createEventListener(inputType, 'change', 'type');
         addForm.append(inputType);
-        inputType.placeholder = 'add a type...';
 
-        inputType.addEventListener('change', (e) => {
-            if (e.target.value) {
-                this.type = e.target.value;
-            }
-        });
-
-        const inputColor = document.createElement('input');
-        inputColor.type = 'text';
-        inputColor.setAttribute('class', 'add-field');
+        const inputColor = this.createInput('color', 'add-field', 'text', 'add a color');
+        this.createEventListener(inputColor, 'change', 'color');
         addForm.append(inputColor);
-        inputColor.placeholder = 'add a color...';
 
-        inputColor.addEventListener('change', (e) => {
-            if (e.target.value) {
-                this.color = e.target.value;
-            }
-        });
-
-        const inputModel = document.createElement('input');
-        inputModel.type = 'text';
-        inputModel.setAttribute('class', 'add-field');
+        const inputModel = this.createInput('model', 'add-field', 'text', 'add a model');
+        this.createEventListener(inputModel, 'change', 'model');
         addForm.append(inputModel);
-        inputModel.placeholder = 'add a model...';
-
-        inputModel.addEventListener('change', (e) => {
-            if (e.target.value) {
-                this.model = e.target.value;
-            }
-        });
 
         const btnAdd = document.createElement('button');
         btnAdd.setAttribute('class', 'btn btn-add');
@@ -65,5 +41,23 @@ export class AddForm {
 
         root.appendChild(formContainer);
         formContainer.appendChild(addForm);
+    }
+
+    createInput(name, className, type, placeholder) {
+        const input = document.createElement('input');
+        input.setAttribute('name', `${name}`);
+        input.setAttribute('class', `${className}`);
+        input.type = type;
+        input.placeholder = placeholder;
+
+        return input;
+    }
+
+    createEventListener(input, typeEvent, name) {
+        return input.addEventListener(typeEvent, (e) => {
+            if (e.target.value) {
+                this[name] = e.target.value;
+            }
+        });
     }
 }
