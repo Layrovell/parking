@@ -6,8 +6,74 @@ body {
 }
 
 .container {
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.add-form,
+.search-form {
+    width: 200px;
+    text-align: center;
+}
+
+.statistic-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
 }
+
+.table {
+    width: calc(100% - 60px);
+    text-align: center;
+    margin: 20px auto;
+}
+
+th,
+td {
+    outline: 1px dashed lightblue;
+}
+
+.table-places,
+.table-statistics {
+    outline: 1px solid linen;
+    border-spacing: 10px;
+}
+
+.td-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    padding: 10px;
+}
+
+.td-type {
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px 20px;
+    display: flex;
+    width: 200px;
+}
+
+.td-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.table-places tr {
+    display: flex;
+    padding: 5px;
+}
+
+/*li {*/
+/*    list-style: none;*/
+/*    padding: 10px;*/
+/*    outline: 1px dashed lightsalmon;*/
+/*    width: 200px;*/
+/*}*/

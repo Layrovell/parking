@@ -20,21 +20,26 @@ export class ApiCalls {
             }
 
             const result = await response.json();
-            this.transports = result.items;
-        } catch (e) {
-        }
+            this.transports = await result.items;
+        } catch (e) {}
     }
 
-    async createItemForServer(type, color, model, number) {
+    async createItemForServer(type, color, model) {
+        const data = this.transports;
+        console.log(data);
         try {
             const response = await fetch(`http://localhost:8008/api/transports/create`, {
                 method: 'POST',
                 headers: {'Content-type': 'application/json; charset=UTF-8'},
-                body: JSON.stringify({type, color, model, number}),
+                body: JSON.stringify({
+                    type,
+                    color,
+                    model,
+                    number: this.transports.length,
+                }),
             })
             return await response.json();
-        } catch (e) {
-        }
+        } catch (e) {}
     }
 
     async deleteItemFromServer(id) {
@@ -44,7 +49,6 @@ export class ApiCalls {
             })
 
             await response.json();
-        } catch (e) {
-        }
+        } catch (e) {}
     }
 }
