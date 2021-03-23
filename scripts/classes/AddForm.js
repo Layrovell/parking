@@ -1,6 +1,6 @@
 export class AddForm {
     constructor(config) {
-        this.newTransport = [];
+        // this.newTransport = [];
         this.type = '';
         this.color = '';
         this.model = '';
@@ -35,6 +35,7 @@ export class AddForm {
 
         addForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            // await this.config.add(this.type, this.color, this.model);
             await this.config.add(this.type, this.color, this.model);
             console.log('was added')
         });

@@ -5,8 +5,7 @@ body {
     font-size: 18px;
 }
 
-.container {
-}
+.container {}
 
 .form-container {
     display: flex;
@@ -20,11 +19,7 @@ body {
     text-align: center;
 }
 
-.statistic-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+.statistic-container {}
 
 .table {
     width: calc(100% - 60px);
@@ -41,39 +36,44 @@ td {
 .table-statistics {
     outline: 1px solid linen;
     border-spacing: 10px;
+    table-layout: fixed;
 }
 
-.td-number {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    padding: 10px;
-}
+.th-statistics {}
 
-.td-type {
-    align-items: center;
-    justify-content: flex-start;
-    padding: 10px 20px;
-    display: flex;
-    width: 200px;
-}
-
+.td-number,
+.td-type,
+.td-model,
+.td-color,
 .td-delete {
     display: flex;
     align-items: center;
+    padding: 8px 16px;
+}
+
+.td-number {
+    align-items: center;
     justify-content: center;
-    padding: 5px;
+    width: 40px;
+}
+
+.td-type {
+    width: 160px;
+}
+
+.td-model {
+    width: 60px;
+}
+
+.td-color {
+    width: 60px;
+}
+
+.td-delete {
+    justify-content: center;
 }
 
 .table-places tr {
     display: flex;
     padding: 5px;
 }
-
-/*li {*/
-/*    list-style: none;*/
-/*    padding: 10px;*/
-/*    outline: 1px dashed lightsalmon;*/
-/*    width: 200px;*/
-/*}*/

@@ -7,10 +7,8 @@ const countOfPlaces = 30;
 export class InterfaceApp {
     constructor(root, config) {
         this.root = root;
-        this.AddForm = new AddForm({
-            add: config.addItem,
-        });
-        this.SearchForm = new SearchForm();
+        this.AddForm = new AddForm({ add: config.addItem });
+        this.SearchForm = new SearchForm({ filter: config.filter });
         this.StatisticsForm = new StatisticsForm();
         this.config = config;
         this.info = {
@@ -50,13 +48,10 @@ export class InterfaceApp {
 
         const table = document.createElement('table');
         table.setAttribute('class', 'table table-places');
+        table.setAttribute('id', 'myTable');
 
         const tbody = document.createElement('tbody');
         table.appendChild(tbody);
-
-        // console.log('asdasd: ', transport);
-        // const transport = await transport.then(data => data);
-        // console.log(data);
 
         for (let el of transport) {
             // if ( ... > count) { return ..  }
@@ -75,6 +70,16 @@ export class InterfaceApp {
             tdType.innerHTML = el.type;
             row.appendChild(tdType);
 
+            const tdModel = document.createElement('td');
+            tdModel.classList.add('td-model');
+            tdModel.innerHTML = el.model;
+            row.appendChild(tdModel);
+
+            const tdColor = document.createElement('td');
+            tdColor.classList.add('td-color');
+            tdColor.innerHTML = el.color;
+            row.appendChild(tdColor);
+
             const deleteButton = this.createTableButton(
                 'Delete',
                 this.info.id,
@@ -87,7 +92,7 @@ export class InterfaceApp {
             deleteButtonCell.append(deleteButton);
             row.appendChild(deleteButtonCell);
         }
-        root.after(table);
+        root.appendChild(table);
     }
 
     createTableButton(label, data, className, action) {
@@ -102,18 +107,3 @@ export class InterfaceApp {
         return button;
     }
 }
-
-
-// const list = document.createElement('ul');
-// // console.log(transport);
-// const ul = document.createElement('ul');
-//
-// transport.forEach(el => {
-//     const li = document.createElement('li');
-//
-//     for (let j = 0; j < 8; j++) {
-//         li.innerHTML = el.type;
-//         ul.appendChild(li);
-//     }
-// })
-// root.after(ul);

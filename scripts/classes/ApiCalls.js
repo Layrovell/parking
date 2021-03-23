@@ -19,6 +19,9 @@ export class ApiCalls {
                 return Promise.reject('Content-type is not supported');
             }
 
+            // const result = await response.json();
+            // return result.items;
+
             const result = await response.json();
             this.transports = await result.items;
         } catch (e) {}
@@ -26,9 +29,8 @@ export class ApiCalls {
 
     async createItemForServer(type, color, model) {
         const data = this.transports;
-        console.log(data);
         try {
-            const response = await fetch(`http://localhost:8008/api/transports/create`, {
+            await fetch(`http://localhost:8008/api/transports/create`, {
                 method: 'POST',
                 headers: {'Content-type': 'application/json; charset=UTF-8'},
                 body: JSON.stringify({
@@ -38,7 +40,7 @@ export class ApiCalls {
                     number: this.transports.length,
                 }),
             })
-            return await response.json();
+            location.reload();
         } catch (e) {}
     }
 
@@ -47,7 +49,7 @@ export class ApiCalls {
             const response = await fetch(`http://localhost:8008/api/transports/delete/${id}`, {
                 method: 'GET',
             })
-
+            location.reload();
             await response.json();
         } catch (e) {}
     }
