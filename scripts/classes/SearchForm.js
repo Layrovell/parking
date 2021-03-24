@@ -12,7 +12,9 @@ export class SearchForm {
 
         const searchField = this.createInput('byType', 'search-field', 'text', 'search...');
         searchField.setAttribute('id', 'myInput');
-        searchField.addEventListener('keyup', this.config.filter);
+        searchField.addEventListener('keyup', (e) => {
+            this.config.filter(e.target.value);
+        });
         SearchForm.append(searchField);
 
         const btnSearch = document.createElement('button');

@@ -47,7 +47,7 @@ export class StatisticsForm {
     }
 
     async getAvailablePlaces(data) {
-        return String(40 - data.length);
+        return String(10 - data.length);
     }
 
     async getCars(data) {

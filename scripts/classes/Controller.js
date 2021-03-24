@@ -14,6 +14,7 @@ export class Controller {
             filter: this.filterItem.bind(this),
         });
         this.carsOnParking = [];
+        this.res = [];
     }
 
     async addItem(type, color, model) {
@@ -22,7 +23,8 @@ export class Controller {
         const combinedSize = this.carsOnParking.reduce((acc, curr) => acc + curr.size, 0)
         if (Math.floor(combinedSize + newTransport.size) <= limit) {
             await this.api.createItemForServer(newTransport, this.carsOnParking.length)
-            this.carsOnParking = await this.api.getAllDataFromServer();
+            this.carsOnParking = await this.api.filteredItemsFromServer();
+            console.log(this.carsOnParking)
         } else {
             await this.InterfaceApp.createErrorForm(true);
         }
@@ -31,38 +33,33 @@ export class Controller {
     async deleteItem(id) {
         if (id) {
             await this.api.deleteItemFromServer(id)
-            console.log(`item delete: ${id}`);
         } else {
             console.log('Id is not provided!');
         }
     }
 
-    async filterItem() {
-        const input = document.getElementById('myInput');
-        const query = input.value.toLowerCase();
-        const table = document.getElementById('myTable');
-        const tr = table.getElementsByTagName('tr');
+    async filterItem(query) {
+        // this.carsOnParking = await this.api.filteredItemsFromServer(query);
 
-        for (let i = 0; i < tr.length; i++) {
-            let tds = tr[i].getElementsByTagName('td');
-            let flag = false;
-
-            for (let j = 0; j < tds.length; j++) {
-                let td = tds[j];
-                if (td.innerHTML.toLowerCase().indexOf(query) > -1) {
+        this.res = this.carsOnParking.filter((freight) => {
+            let values = Object.values(freight);
+            let flag = false
+            values.forEach((val) => {
+                if(val.indexOf(query) > -1) {
                     flag = true;
+                    return;
                 }
-            }
-            if (flag) {
-                tr[i].style.display = '';
-            } else {
-                tr[i].style.display = 'none';
-            }
-        }
+            })
+
+            if(flag) return freight
+        });
+
+        console.log(this.carsOnParking)
+        console.log(this.res)
     }
 
     async render() {
-        this.carsOnParking = await this.api.getAllDataFromServer();
+        this.carsOnParking = await this.api.filteredItemsFromServer();
         console.log(this.carsOnParking);
 
         await this.InterfaceApp.createRoot();

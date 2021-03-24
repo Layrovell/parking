@@ -2,6 +2,7 @@ import {AddForm} from "./AddForm.js";
 import {SearchForm} from "./SearchForm.js";
 import {StatisticsForm} from "./StatisticsForm.js";
 import {ErrorForm} from "./ErrorForm.js";
+import {ApiCalls} from "./ApiCalls.js";
 
 export class InterfaceApp {
     constructor(root, config) {
