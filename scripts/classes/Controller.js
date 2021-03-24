@@ -24,7 +24,7 @@ export class Controller {
             await this.api.createItemForServer(newTransport, this.carsOnParking.length)
             this.carsOnParking = await this.api.getAllDataFromServer();
         } else {
-            await this.InterfaceApp.createErrorForm();
+            await this.InterfaceApp.createErrorForm(true);
         }
     }
 
@@ -70,7 +70,7 @@ export class Controller {
         await this.InterfaceApp.createSearchForm(this.carsOnParking);
         await this.InterfaceApp.createStatisticForm(this.carsOnParking);
         await this.InterfaceApp.createTable(this.carsOnParking);
-        await this.InterfaceApp.cre
+        await this.InterfaceApp.createErrorForm();
     }
 }
 

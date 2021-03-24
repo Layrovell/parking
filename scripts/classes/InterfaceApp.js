@@ -106,7 +106,9 @@ export class InterfaceApp {
         return button;
     }
 
-    createErrorForm() {
-        this.ErrorForm.createErrorForm();
+    createErrorForm(bool) {
+        if (bool) {
+            this.ErrorForm.createErrorForm();
+        }
     }
 }
