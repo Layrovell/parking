@@ -1,6 +1,5 @@
 export class AddForm {
     constructor(config) {
-        this.newTransport = [];
         this.type = '';
         this.color = '';
         this.model = '';

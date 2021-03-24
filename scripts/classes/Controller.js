@@ -1,5 +1,8 @@
-import {ApiCalls} from "./ApiCalls.js";
-import {InterfaceApp} from "./InterfaceApp.js";
+import {ApiCalls} from './ApiCalls.js';
+import {InterfaceApp} from './InterfaceApp.js';
+import {transportCreator} from './Transport.js';
+
+const limit = 10;
 
 export class Controller {
     constructor({baseURL, node}) {
@@ -8,25 +11,20 @@ export class Controller {
             addItem: this.addItem.bind(this),
             delete: this.deleteItem.bind(this),
             node,
-            filter: this.filterItems.bind(this),
+            filter: this.filterItem.bind(this),
         });
+        this.carsOnParking = [];
     }
 
-    // async addItem(event) {
-        //    const {type, color, model, number} = e.target.formValues;
-        //    const newTransport = transportCreator(type, color, model, number);
-        //    if (Math.floor(carsOnParking.length + item.size) <= limit) {
-        //    this.api.createItemForServer(truck)
-        //    } else {
-        //      body.appendChild(errorDiv) // TODO: validation
-        //    }
-    // }
-
     async addItem(type, color, model) {
-        if (type && color && model) {
-            await this.api.createItemForServer(type, color, model);
+        const newTransport = transportCreator(type, color, model);
+        console.log(newTransport);
+        const combinedSize = this.carsOnParking.reduce((acc, curr) => acc + curr.size, 0)
+        if (Math.floor(combinedSize + newTransport.size) <= limit) {
+            await this.api.createItemForServer(newTransport, this.carsOnParking.length)
+            this.carsOnParking = await this.api.getAllDataFromServer();
         } else {
-            console.log('not all');
+            await this.InterfaceApp.createErrorForm();
         }
     }
 
@@ -39,32 +37,40 @@ export class Controller {
         }
     }
 
-    async filterItems(data, options, query) {
-        console.log('rtgfg');
-        switch (options) {
-            case options.type:
-              return await data.type.filter(el => el.type.toLocaleLowerCase().includes(query));
-            case options.color:
-                return await data.type.filter(el => el.color.toLocaleLowerCase().includes(query));
-            case options.model:
-                return await data.type.filter(el => el.model.toLocaleLowerCase().includes(query));
-            case options.number:
-                return await data.type.filter(el => el.number.toLocaleLowerCase().includes(query));
-            default:
-                return data;
+    async filterItem() {
+        const input = document.getElementById('myInput');
+        const query = input.value.toLowerCase();
+        const table = document.getElementById('myTable');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < tr.length; i++) {
+            let tds = tr[i].getElementsByTagName('td');
+            let flag = false;
+
+            for (let j = 0; j < tds.length; j++) {
+                let td = tds[j];
+                if (td.innerHTML.toLowerCase().indexOf(query) > -1) {
+                    flag = true;
+                }
+            }
+            if (flag) {
+                tr[i].style.display = '';
+            } else {
+                tr[i].style.display = 'none';
+            }
         }
     }
 
     async render() {
-        const transports = await this.api.getAllDataFromServer().then(() => this.api.transports);
-        console.log(transports);
+        this.carsOnParking = await this.api.getAllDataFromServer();
+        console.log(this.carsOnParking);
 
         await this.InterfaceApp.createRoot();
         await this.InterfaceApp.createAddForm();
-        await this.InterfaceApp.createSearchForm(transports);
-        await this.InterfaceApp.createStatisticForm(transports);
-        // await this.InterfaceApp.createTable(this.filterItems(transports));
-        await this.InterfaceApp.createTable(transports);
+        await this.InterfaceApp.createSearchForm(this.carsOnParking);
+        await this.InterfaceApp.createStatisticForm(this.carsOnParking);
+        await this.InterfaceApp.createTable(this.carsOnParking);
+        await this.InterfaceApp.cre
     }
 }
 

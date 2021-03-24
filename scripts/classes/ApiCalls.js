@@ -6,7 +6,7 @@ export class ApiCalls {
 
     async getAllDataFromServer() {
         try {
-            const response = await fetch(`http://localhost:8008/api/transports/get`, {
+            const response = await fetch(`${this.baseURL}/api/transports/get`, {
                 method: 'POST',
                 headers: {'Content-type': 'application/json; charset=UTF-8'},
             })
@@ -15,40 +15,39 @@ export class ApiCalls {
                 return Promise.reject(`${response.status} - ${response.statusText}`);
             }
 
-            if (!response.headers.get('content-type').includes('application/json')) {
-                return Promise.reject('Content-type is not supported');
-            }
-
             const result = await response.json();
-            this.transports = await result.items;
-        } catch (e) {}
+            return result.items;
+        } catch (err) {
+            console.log(err);
+        }
     }
 
-    async createItemForServer(type, color, model) {
-        const data = this.transports;
-        console.log(data);
-        try {
-            const response = await fetch(`http://localhost:8008/api/transports/create`, {
-                method: 'POST',
-                headers: {'Content-type': 'application/json; charset=UTF-8'},
-                body: JSON.stringify({
-                    type,
-                    color,
-                    model,
-                    number: this.transports.length,
-                }),
-            })
-            return await response.json();
-        } catch (e) {}
+    async createItemForServer(transport, number) {
+        await fetch(`${this.baseURL}/api/transports/create`, {
+            method: 'POST',
+            headers: {'Content-type': 'application/json; charset=UTF-8'},
+            body: JSON.stringify({
+                ...transport,
+                number,
+            }),
+        })
+        location.reload();
     }
 
     async deleteItemFromServer(id) {
         try {
-            const response = await fetch(`http://localhost:8008/api/transports/delete/${id}`, {
+            const response = await fetch(`${this.baseURL}/api/transports/delete/${id}`, {
                 method: 'GET',
             })
 
+            if (!response.ok) {
+                return Promise.reject(`${response.status} - ${response.statusText}`);
+            }
+
+            location.reload();
             await response.json();
-        } catch (e) {}
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

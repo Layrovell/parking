@@ -5,3 +5,4 @@ export * from './classes/StatisticsForm.js';
 export * from './classes/SearchForm.js';
 export * from './classes/Transport.js';
 export * from './classes/AddForm.js';
+export * from './classes/ErrorForm.js';

@@ -27,10 +27,10 @@ export class StatisticsForm {
 
         const tr = document.createElement('tr');
 
-        ['free', 'cars', 'buses', 'motos', 'trucks', 'all'].forEach(el => {
+        ['available', 'cars', 'buses', 'motorcycles', 'trucks', 'all'].forEach(el => {
             const th = document.createElement('th');
             th.innerHTML = `${el}`;
-            th.classList.add(`th-${el}`);
+            th.classList.add(`th-statistics`);
 
             thead.appendChild(th);
             table.prepend(thead);
