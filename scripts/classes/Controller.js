@@ -39,11 +39,10 @@ export class Controller {
     async filterItem(query) {
         if (query) {
             this.carsOnParking = await this.api.filteredItemsFromServer(query);
-            await this.InterfaceApp.createTable(this.carsOnParking);
         } else {
             this.carsOnParking = await this.api.filteredItemsFromServer();
-            await this.InterfaceApp.createTable(this.carsOnParking);
         }
+        await this.InterfaceApp.createTable(this.carsOnParking);
     }
 
     async render() {
