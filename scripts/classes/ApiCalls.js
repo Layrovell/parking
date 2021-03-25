@@ -1,48 +1,28 @@
 export class ApiCalls {
     constructor(baseURL) {
         this.baseURL = baseURL;
-        this.transports = [];
     }
 
-    // async getAllDataFromServer() {
-    //     try {
-    //         const response = await fetch(`${this.baseURL}/api/transports/get`, {
-    //             method: 'POST',
-    //             headers: {'Content-type': 'application/json; charset=UTF-8'},
-    //         })
-    //
-    //         if (!response.ok) {
-    //             return Promise.reject(`${response.status} - ${response.statusText}`);
-    //         }
-    //
-    //         const result = await response.json();
-    //         return result.items;
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
-
     async filteredItemsFromServer(query) {
-        try {
-            const response = await fetch(`${this.baseURL}/api/transports/get`, {
-                method: 'POST',
-                headers: {'Content-type': 'application/json; charset=UTF-8'},
-                body: JSON.stringify({
-                    type: query
-                }),
-            })
-            const result = await response.json();
-            return result.items;
-                // .filter(e => e.model === query || e.color === query || e.number === query || e.model === query);
-        } catch (e) {
-            console.log(e);
-        }
+        const response = await fetch(`${this.baseURL}/api/transports/get`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+                $or: [{color: query}, {model: query}, {number: query}, {type: query}]
+            }),
+        })
+        const result = await response.json();
+        return result.items;
     }
 
     async createItemForServer(transport, number) {
         await fetch(`${this.baseURL}/api/transports/create`, {
             method: 'POST',
-            headers: {'Content-type': 'application/json; charset=UTF-8'},
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            },
             body: JSON.stringify({
                 ...transport,
                 number,

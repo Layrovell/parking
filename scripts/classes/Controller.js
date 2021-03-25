@@ -14,15 +14,14 @@ export class Controller {
             filter: this.filterItem.bind(this),
         });
         this.carsOnParking = [];
-        this.res = [];
     }
 
     async addItem(type, color, model) {
         const newTransport = transportCreator(type, color, model);
         console.log(newTransport);
-        const combinedSize = this.carsOnParking.reduce((acc, curr) => acc + curr.size, 0)
+        const combinedSize = this.carsOnParking.reduce((acc, curr) => acc + curr.size, 0);
         if (Math.floor(combinedSize + newTransport.size) <= limit) {
-            await this.api.createItemForServer(newTransport, this.carsOnParking.length)
+            await this.api.createItemForServer(newTransport, String(this.carsOnParking.length))
             this.carsOnParking = await this.api.filteredItemsFromServer();
             console.log(this.carsOnParking)
         } else {
@@ -39,36 +38,18 @@ export class Controller {
     }
 
     async filterItem(query) {
-        this.carsOnParking = await this.api.filteredItemsFromServer(query);
-        console.log('from BE:', this.carsOnParking);
-        this.res = this.carsOnParking.filter((freight) => {
-            const { type, number, color, model } = freight;
-            let values = Object.values({ type, number, color, model });
-            let flag = false
-            values.forEach((val) => {
-
-                if (typeof val === 'string') {
-                    if(val.toLowerCase().indexOf(query.toLowerCase()) > -1) {
-                        flag = true;
-                    }
-                } else {
-                    if (val === +query) {
-                        flag = true;
-                    }
-                }
-            })
-
-            if(flag) return freight
-        });
-
-        console.log(this.carsOnParking)
-        console.log(this.res)
-        await this.InterfaceApp.createTable(this.res);
+        if (query) {
+            this.carsOnParking = await this.api.filteredItemsFromServer(query);
+            await this.InterfaceApp.createTable(this.carsOnParking);
+        } else {
+            this.carsOnParking = await this.api.filteredItemsFromServer();
+            await this.InterfaceApp.createTable(this.carsOnParking);
+            console.log('not: ', this.carsOnParking);
+        }
     }
 
     async render() {
         this.carsOnParking = await this.api.filteredItemsFromServer();
-        console.log(this.carsOnParking);
 
         await this.InterfaceApp.createRoot();
         await this.InterfaceApp.createAddForm();
