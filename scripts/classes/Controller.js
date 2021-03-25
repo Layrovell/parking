@@ -23,7 +23,6 @@ export class Controller {
         if (Math.floor(combinedSize + newTransport.size) <= limit) {
             await this.api.createItemForServer(newTransport, String(this.carsOnParking.length))
             this.carsOnParking = await this.api.filteredItemsFromServer();
-            console.log(this.carsOnParking)
         } else {
             await this.InterfaceApp.createErrorForm(true);
         }
@@ -44,7 +43,6 @@ export class Controller {
         } else {
             this.carsOnParking = await this.api.filteredItemsFromServer();
             await this.InterfaceApp.createTable(this.carsOnParking);
-            console.log('not: ', this.carsOnParking);
         }
     }
 
