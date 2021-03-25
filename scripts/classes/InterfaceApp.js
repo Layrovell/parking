@@ -47,7 +47,9 @@ export class InterfaceApp {
         const container = document.createElement('div');
         container.setAttribute('class', 'container');
 
-        const table = document.createElement('table');
+        const table = document.getElementById('myTable') || document.createElement('table');
+        table.innerHTML = '';
+
         table.setAttribute('class', 'table table-places');
         table.setAttribute('id', 'myTable');
 

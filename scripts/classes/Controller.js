@@ -39,15 +39,22 @@ export class Controller {
     }
 
     async filterItem(query) {
-        // this.carsOnParking = await this.api.filteredItemsFromServer(query);
-
+        this.carsOnParking = await this.api.filteredItemsFromServer(query);
+        console.log('from BE:', this.carsOnParking);
         this.res = this.carsOnParking.filter((freight) => {
-            let values = Object.values(freight);
+            const { type, number, color, model } = freight;
+            let values = Object.values({ type, number, color, model });
             let flag = false
             values.forEach((val) => {
-                if(val.indexOf(query) > -1) {
-                    flag = true;
-                    return;
+
+                if (typeof val === 'string') {
+                    if(val.toLowerCase().indexOf(query.toLowerCase()) > -1) {
+                        flag = true;
+                    }
+                } else {
+                    if (val === +query) {
+                        flag = true;
+                    }
                 }
             })
 
@@ -56,6 +63,7 @@ export class Controller {
 
         console.log(this.carsOnParking)
         console.log(this.res)
+        await this.InterfaceApp.createTable(this.res);
     }
 
     async render() {
